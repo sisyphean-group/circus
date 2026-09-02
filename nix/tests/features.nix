@@ -136,12 +136,6 @@ testers.runNixOSTest {
         )
         assert code.strip() == "403", f"Expected 403 for read-only setup, got {code.strip()}"
 
-    # Clean up setup-test project
-    machine.succeed(
-        f"curl -sf -X DELETE http://127.0.0.1:3000/api/v1/projects/{setup_project_id} "
-        f"{auth_header}"
-    )
-
     # Dashboard
     with subtest("Admin page JS uses escapeHtml for error handling"):
         body = machine.succeed(

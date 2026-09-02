@@ -153,10 +153,5 @@ testers.runNixOSTest {
             "http://127.0.0.1:3000/api/v1/channels/00000000-0000-0000-0000-000000000000/nixexprs.tar.xz"
         )
         assert code.strip() == "404", f"Expected 404 for nonexistent channel, got {code.strip()}"
-
-    # Cleanup
-    machine.succeed(
-        f"curl -sf -X DELETE http://127.0.0.1:3000/api/v1/projects/{project_id} {auth_header}"
-    )
   '';
 }
