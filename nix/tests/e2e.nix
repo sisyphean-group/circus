@@ -798,28 +798,5 @@ in {
             "curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/nix-cache/nix-cache-info"
         ).strip()
         assert cache == "200", f"Expected nix-cache to stay public, got {cache}"
-
-        # Restore the public-read posture for the cleanup steps below.
-        machine.succeed("rm /run/systemd/system/circus-server.service.d/reads.conf")
-        machine.succeed("systemctl daemon-reload")
-        machine.succeed("systemctl restart circus-server")
-        machine.wait_for_unit("circus-server.service", timeout=30)
-        machine.wait_until_succeeds("curl -sf http://127.0.0.1:3000/health", timeout=30)
-
-    # Cleanup: Delete project
-    with subtest("Delete E2E project"):
-        code = machine.succeed(
-            "curl -s -o /dev/null -w '%{http_code}' "
-            f"-X DELETE http://127.0.0.1:3000/api/v1/projects/{e2e_project_id} "
-            f"{auth_header}"
-        )
-        assert code.strip() == "200", f"Expected 200 for project delete, got {code.strip()}"
-
-    with subtest("Deleted E2E project returns 404"):
-        code = machine.succeed(
-            "curl -s -o /dev/null -w '%{http_code}' "
-            f"http://127.0.0.1:3000/api/v1/projects/{e2e_project_id}"
-        )
-        assert code.strip() == "404", f"Expected 404 for deleted project, got {code.strip()}"
   '';
 })

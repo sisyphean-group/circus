@@ -379,17 +379,5 @@ testers.runNixOSTest {
         )
         # Should fail gracefully (no OAuth configured)
         assert code.strip() in ("400", "404", "500"), f"Expected error code, got {code.strip()}"
-
-    # Cleanup
-    with subtest("Cleanup test projects"):
-        machine.succeed(
-            f"curl -sf -X DELETE http://127.0.0.1:3000/api/v1/projects/{project_id} {auth_header}"
-        )
-        machine.succeed(
-            f"curl -sf -X DELETE http://127.0.0.1:3000/api/v1/projects/{gitlab_project_id} {auth_header}"
-        )
-        machine.succeed(
-            f"curl -sf -X DELETE http://127.0.0.1:3000/api/v1/projects/{gitea_project_id} {auth_header}"
-        )
   '';
 }

@@ -156,10 +156,5 @@ in
               f"{auth_header}"
           )
           assert code.strip() == "404", f"Expected 404, got {code.strip()}"
-
-      # Cleanup
-      machine.succeed(
-          f"curl -sf -X DELETE http://127.0.0.1:3000/api/v1/projects/{project_id} {auth_header}"
-      )
     '';
   }

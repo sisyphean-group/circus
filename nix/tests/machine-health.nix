@@ -195,10 +195,5 @@ testers.runNixOSTest {
         )
         d2 = int(delta2.strip())
         assert 175 <= d2 <= 185, f"2nd failure backoff expected ~180s, got {d2}s"
-
-    # Cleanup
-    machine.succeed(
-        f"curl -sf -X DELETE http://127.0.0.1:3000/api/v1/admin/builders/{builder_id} {auth_header}"
-    )
   '';
 }
